@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 
 var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
+var categoryController = require('./controllers/category.js');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -11,7 +12,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/categories', function (req, res) {
-  res.render('categories');
+  res.render('categories', {categories: categoryController.getCategories()});
 });
 
 app.use(function(req, res, next){ res.status(404);
