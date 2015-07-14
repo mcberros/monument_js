@@ -1,0 +1,23 @@
+{
+  "name": "monument_js",
+  "version": "1.0.0",
+  "description": "An application to collect the information of your monuments",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -u bdd -R spec -t 500 --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcberros/monument_js.git"
+  },
+  "author": "mcberros@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcberros/monument_js/issues"
+  },
+  "homepage": "https://github.com/mcberros/monument_js",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5"
+  }
+}
