@@ -11,18 +11,20 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/categories', function (req, res) {
-  res.render('categories', {categories: categoryController.getCategories()});
+app.get('/categories', function (req, res, next) {
+	categoryController.getCategories(function(err, categories){
+		if(err) {
+			console.log(err);
+			res.status(500);
+			return res.render('500');
+		}
+  	res.render('categories', {categories: categories});
+  });
 });
 
-app.use(function(req, res, next){ res.status(404);
+app.use(function(req, res, next){
+	res.status(404);
   res.render('404');
-});
-
-// 500 error handler (middleware)
-app.use(function(err, req, res, next){ console.error(err.stack);
-  res.status(500);
-  res.render('500');
 });
 
 var server = app.listen(3000, function () {
