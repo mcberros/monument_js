@@ -7,6 +7,8 @@ var categoryController = require('./controllers/category.js');
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+app.use(require('body-parser').urlencoded({extended: false}));
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -22,6 +24,10 @@ app.get('/categories', function (req, res, next) {
   });
 });
 
+app.get('/category/new', function (req, res) {
+  res.render('categories/new', { csrf: 'CSRF token goes here' });
+});
+
 app.get('/category/:id', function (req, res, next) {
 	var id = req.params.id;
 
@@ -33,6 +39,22 @@ app.get('/category/:id', function (req, res, next) {
 		}
   	res.render('categories/show', {category: category});
   });
+});
+
+app.post('/category', function(req, res){
+	console.log('CSRF token (from hidden form field): ' + req.body._csrf);
+	console.log('Name (from visible form field): ' + req.body.name);
+
+	name = req.body.name;
+
+	categoryController.createCategory(name, function(err, category){
+		if(err) {
+			console.log(err);
+			res.status(500);
+			return res.render('500');
+		};
+		res.render('categories/show', {category: category});
+	});
 });
 
 app.use(function(req, res, next){

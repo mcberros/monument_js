@@ -35,3 +35,8 @@ exports.getCategories = function(cb) {
 exports.getCategory = function(id, cb) {
 	Category.findOne({_id: id}, cb);
 };
+
+exports.createCategory = function(name, cb) {
+	var cat = new Category({ name: name });
+	cat.save(cb);
+};
