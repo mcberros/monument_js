@@ -18,7 +18,20 @@ app.get('/categories', function (req, res, next) {
 			res.status(500);
 			return res.render('500');
 		}
-  	res.render('categories', {categories: categories});
+  	res.render('categories/index', {categories: categories});
+  });
+});
+
+app.get('/category/:id', function (req, res, next) {
+	var id = req.params.id;
+
+	categoryController.getCategory(id, function(err, category){
+		if(err) {
+			console.log(err);
+			res.status(500);
+			return res.render('500');
+		}
+  	res.render('categories/show', {category: category});
   });
 });
 

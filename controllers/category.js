@@ -29,9 +29,9 @@ var categories = [
 ];
 
 exports.getCategories = function(cb) {
-	console.log("inside getCategories");
-	// db.once('open', function () {
-		// console.log("inside find");
-		Category.find({}, cb);
-	// });
+	Category.find({}, cb);
+};
+
+exports.getCategory = function(id, cb) {
+	Category.findOne({_id: id}, cb);
 };
