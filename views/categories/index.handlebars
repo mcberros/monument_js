@@ -2,9 +2,13 @@
 <ul>
 	{{#each categories}}
 	<li>
-		<a href="/category/{{id}}">{{name}}</a>
+		<a href="/categories/{{id}}">{{name}}</a>
+		<form method="POST" action="/categories/{{id}}" enctype="application/x-www-form-urlencoded">
+		  <input type="hidden" name="_method" value="DELETE">
+		  <button type="submit">Delete resource</button>
+		</form>
 	</li>
 	{{/each}}
 </ul>
 
-<a href="/category/new">Create new category</a>
+<a href="/categories/new">Create new category</a>
