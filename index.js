@@ -51,6 +51,19 @@ app.get('/categories/:id', function (req, res, next) {
   });
 });
 
+app.get('/categories/:id/edit', function (req, res) {
+	var id = req.params.id;
+
+	categoryController.editCategory(id, function(err, category){
+		if(err) {
+			console.log(err);
+			res.status(500);
+			return res.render('500');
+		}
+  	res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
+  });
+});
+
 app.post('/categories', function(req, res){
 	console.log('CSRF token (from hidden form field): ' + req.body._csrf);
 	console.log('Name (from visible form field): ' + req.body.name);
@@ -63,7 +76,21 @@ app.post('/categories', function(req, res){
 			res.status(500);
 			return res.render('500');
 		};
-		res.render('categories/show', {category: category});
+		res.redirect('/categories/' + category._id);
+	});
+});
+
+app.put('/categories/:id', function(req, res){
+	var id = req.params.id;
+	var name = req.body.name;
+
+	categoryController.updateCategory(id, name, function(err){
+		if(err) {
+			console.log(err);
+			res.status(500);
+			return res.render('500');
+		};
+		res.redirect('/categories/' + id);
 	});
 });
 
