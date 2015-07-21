@@ -4,7 +4,7 @@
   "description": "An application to collect the information of your monuments",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -u bdd -R spec -t 500 --recursive"
+    "test": "protractor protractor_conf.js"
   },
   "repository": {
     "type": "git",
