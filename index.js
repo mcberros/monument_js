@@ -17,6 +17,7 @@ var methodOverride = require('method-override');
 
 var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
 var categoryModel = require('./models/category.js');
+var categoryController = require('./controllers/category.js');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -36,88 +37,32 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/categories', function (req, res, next) {
-	categoryModel.getCategories(function(err, categories){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		}
-  	res.render('categories/index', {categories: categories});
-  });
+app.get('/categories', function (req, res) {
+	categoryController.index(res);
 });
 
 app.get('/categories/new', function (req, res) {
-  res.render('categories/new', { csrf: 'CSRF token goes here' });
+  categoryController.createForm(res);
 });
 
-app.get('/categories/:id', function (req, res, next) {
-	var id = req.params.id;
-
-	categoryModel.getCategory(id, function(err, category){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		}
-  	res.render('categories/show', {category: category});
-  });
+app.get('/categories/:id', function (req, res) {
+	categoryController.show(req, res);
 });
 
 app.get('/categories/:id/edit', function (req, res) {
-	var id = req.params.id;
-
-	categoryModel.editCategory(id, function(err, category){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		}
-  	res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
-  });
+	categoryController.editForm(req, res);
 });
 
 app.post('/categories', function(req, res){
-	console.log('CSRF token (from hidden form field): ' + req.body._csrf);
-	console.log('Name (from visible form field): ' + req.body.name);
-
-	name = req.body.name;
-
-	categoryModel.createCategory(name, function(err, category){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		};
-		res.redirect('/categories/' + category._id);
-	});
+	categoryController.create(req, res);
 });
 
 app.put('/categories/:id', function(req, res){
-	var id = req.params.id;
-	var name = req.body.name;
-
-	categoryModel.updateCategory(id, name, function(err){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		};
-		res.redirect('/categories/' + id);
-	});
+	categoryController.update(req, res);
 });
 
 app.delete('/categories/:id', function (req, res){
-	var id = req.params.id;
-
-	categoryModel.deleteCategory(id, function(err, category){
-		if(err) {
-			console.log(err);
-			res.status(500);
-			return res.render('500');
-		};
-		res.redirect('/categories');
-	});
+	categoryController.remove(req, res);
 });
 
 app.use(function(req, res, next){
