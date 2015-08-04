@@ -16,8 +16,6 @@ var app = express();
 var methodOverride = require('method-override');
 
 var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
-var categoryModel = require('./models/category.js');
-var categoryController = require('./controllers/category.js');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -37,33 +35,7 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/categories', function (req, res) {
-	categoryController.index(res);
-});
-
-app.get('/categories/new', function (req, res) {
-  categoryController.createForm(res);
-});
-
-app.get('/categories/:id', function (req, res) {
-	categoryController.show(req, res);
-});
-
-app.get('/categories/:id/edit', function (req, res) {
-	categoryController.editForm(req, res);
-});
-
-app.post('/categories', function(req, res){
-	categoryController.create(req, res);
-});
-
-app.put('/categories/:id', function(req, res){
-	categoryController.update(req, res);
-});
-
-app.delete('/categories/:id', function (req, res){
-	categoryController.remove(req, res);
-});
+app.use('/categories', require('./routes/category'));
 
 app.use(function(req, res, next){
 	res.status(404);
