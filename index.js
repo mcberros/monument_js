@@ -16,7 +16,7 @@ var app = express();
 var methodOverride = require('method-override');
 
 var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
-var categoryController = require('./controllers/category.js');
+var categoryModel = require('./models/category.js');
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -37,7 +37,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/categories', function (req, res, next) {
-	categoryController.getCategories(function(err, categories){
+	categoryModel.getCategories(function(err, categories){
 		if(err) {
 			console.log(err);
 			res.status(500);
@@ -54,7 +54,7 @@ app.get('/categories/new', function (req, res) {
 app.get('/categories/:id', function (req, res, next) {
 	var id = req.params.id;
 
-	categoryController.getCategory(id, function(err, category){
+	categoryModel.getCategory(id, function(err, category){
 		if(err) {
 			console.log(err);
 			res.status(500);
@@ -67,7 +67,7 @@ app.get('/categories/:id', function (req, res, next) {
 app.get('/categories/:id/edit', function (req, res) {
 	var id = req.params.id;
 
-	categoryController.editCategory(id, function(err, category){
+	categoryModel.editCategory(id, function(err, category){
 		if(err) {
 			console.log(err);
 			res.status(500);
@@ -83,7 +83,7 @@ app.post('/categories', function(req, res){
 
 	name = req.body.name;
 
-	categoryController.createCategory(name, function(err, category){
+	categoryModel.createCategory(name, function(err, category){
 		if(err) {
 			console.log(err);
 			res.status(500);
@@ -97,7 +97,7 @@ app.put('/categories/:id', function(req, res){
 	var id = req.params.id;
 	var name = req.body.name;
 
-	categoryController.updateCategory(id, name, function(err){
+	categoryModel.updateCategory(id, name, function(err){
 		if(err) {
 			console.log(err);
 			res.status(500);
@@ -110,7 +110,7 @@ app.put('/categories/:id', function(req, res){
 app.delete('/categories/:id', function (req, res){
 	var id = req.params.id;
 
-	categoryController.deleteCategory(id, function(err, category){
+	categoryModel.deleteCategory(id, function(err, category){
 		if(err) {
 			console.log(err);
 			res.status(500);
