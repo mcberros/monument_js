@@ -86,6 +86,10 @@ describe('E2E: categories', function() {
 
 		it('delete last category', function(){
 			browser.get('/categories');
+			element.all(by.css('.delete-category-button')).last().click();
+			element.all(by.css('.link-edit-category')).then(function(arr){
+				expect(arr.length).toBe(0);
+			});
 		});
 	});
 });
