@@ -1,4 +1,4 @@
-var categoryModel = require('./models/category.js');
+var categoryModel = require('../models/category.js');
 
 var controller = {
 	index: function(res) {
@@ -10,8 +10,7 @@ var controller = {
 			}
 	  	res.render('categories/index', {categories: categories});
   	});
-	};
-
+	},
 	show: function(req, res) {
 		var id = req.params.id;
 
@@ -23,12 +22,10 @@ var controller = {
 			}
 	  	res.render('categories/show', {category: category});
 	  });
-	};
-
+	},
 	createForm: function(res) {
 		res.render('categories/new', { csrf: 'CSRF token goes here' });
-	};
-
+	},
 	create: function(req, res) {
 		console.log('CSRF token (from hidden form field): ' + req.body._csrf);
 		console.log('Name (from visible form field): ' + req.body.name);
@@ -43,8 +40,7 @@ var controller = {
 			};
 			res.redirect('/categories/' + category._id);
 		});
-	};
-
+	},
 	editForm: function(req, res) {
 		var id = req.params.id;
 
@@ -56,8 +52,7 @@ var controller = {
 			}
 	  	res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
 	  });
-	};
-
+	},
 	update: function(req, res) {
 		var id = req.params.id;
 		var name = req.body.name;
@@ -70,8 +65,7 @@ var controller = {
 			};
 			res.redirect('/categories/' + id);
 		});
-	};
-
+	},
 	remove: function(req, res) {
 		var id = req.params.id;
 
@@ -83,7 +77,7 @@ var controller = {
 			};
 			res.redirect('/categories');
 		});
-	};
+	}
 };
 
 module.exports = controller;
