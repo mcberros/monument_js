@@ -30,14 +30,14 @@ var controller = {
 		console.log('CSRF token (from hidden form field): ' + req.body._csrf);
 		console.log('Name (from visible form field): ' + req.body.name);
 
-		name = req.body.name;
+		var name = req.body.name;
 
 		categoryModel.createCategory(name, function(err, category){
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
-			};
+			}
 			res.redirect('/categories/' + category._id);
 		});
 	},
@@ -62,19 +62,19 @@ var controller = {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
-			};
+			}
 			res.redirect('/categories/' + id);
 		});
 	},
 	remove: function(req, res) {
 		var id = req.params.id;
 
-		categoryModel.deleteCategory(id, function(err, category){
+		categoryModel.deleteCategory(id, function(err){
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
-			};
+			}
 			res.redirect('/categories');
 		});
 	}
