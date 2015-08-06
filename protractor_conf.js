@@ -5,7 +5,6 @@ exports.config = {
     'browserName': 'chrome'
   },
   chromeDriver: './node_modules/protractor/selenium/chromedriver',
-  seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
   baseUrl: 'http://127.0.0.1:3000/',
 
   // Framework to use. Jasmine 2 is recommended.

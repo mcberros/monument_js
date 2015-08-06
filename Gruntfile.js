@@ -12,12 +12,18 @@ module.exports = function(grunt) {
         predef: [ "browser", "by", "element" ]
       },
       all: ['Gruntfile.js', 'controllers/**/*.js', 'models/**/*.js', 'routes/**/*.js', 'test/**/*.js', 'views/**/*.js']
+    },
+    protractor: {
+      options: {
+        configFile: "protractor_conf.js",
+      },
+      all: {}
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-protractor-runner');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['jshint', 'protractor']);
 };
