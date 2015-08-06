@@ -3,6 +3,16 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    express: {
+      options: {
+        background: true
+      },
+      dev: {
+        options: {
+          script: 'index.js'
+        }
+      }
+    },
     jshint: {
       options: {
         undef: true,
@@ -22,8 +32,9 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-protractor-runner');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'protractor']);
+  grunt.registerTask('default', ['jshint', 'express', 'protractor']);
 };
