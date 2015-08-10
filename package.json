@@ -4,6 +4,7 @@
   "description": "An application to collect the information of your monuments",
   "main": "index.js",
   "scripts": {
+    "updateSelenium": "webdriver-manager update",
     "test": "protractor protractor_conf.js"
   },
   "repository": {
@@ -22,10 +23,16 @@
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-express-server": "^0.5.1",
     "grunt-protractor-runner": "^2.0.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "protractor": "^2.1.0"
   },
   "dependencies": {
+    "body-parser": "^1.13.3",
     "express": "^4.13.1",
-    "express-handlebars": "^2.0.1"
+    "express-handlebars": "^2.0.1",
+    "method-override": "^2.3.5",
+    "mongodb": "^2.0.40",
+    "mongoose": "^4.1.1",
+    "passport-local": "^1.0.0"
   }
 }
