@@ -2,7 +2,11 @@
 var mongoose = require('mongoose');
 var startServer = require('./server');
 
-mongoose.connect('mongodb://localhost/test');
+if (process.env.NODE_ENV == 'production') {
+	mongoose.connect('mongodb://' + process.env.MONGOLAB_URI + '/test');
+} else {
+	mongoose.connect('mongodb://localhost/test');
+}
 
 var db = mongoose.connection;
 
