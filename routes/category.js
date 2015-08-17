@@ -3,32 +3,38 @@ var express = require('express');
 
 var router = express.Router();
 
-router.get('/', function (req, res) {
-	categoryController.index(res);
-});
+module.exports = function(isAuthenticated){
 
-router.get('/new', function (req, res) {
-  categoryController.createForm(res);
-});
+	router.use(isAuthenticated);
 
-router.get('/:id', function (req, res) {
-	categoryController.show(req, res);
-});
+	router.get('/', function (req, res) {
+		categoryController.index(res);
+	});
 
-router.get('/:id/edit', function (req, res) {
-	categoryController.editForm(req, res);
-});
+	router.get('/new', function (req, res) {
+	  categoryController.createForm(res);
+	});
 
-router.post('/', function(req, res){
-	categoryController.create(req, res);
-});
+	router.get('/:id', function (req, res) {
+		categoryController.show(req, res);
+	});
 
-router.put('/:id', function(req, res){
-	categoryController.update(req, res);
-});
+	router.get('/:id/edit', function (req, res) {
+		categoryController.editForm(req, res);
+	});
 
-router.delete('/:id', function (req, res){
-	categoryController.remove(req, res);
-});
+	router.post('/', function(req, res){
+		categoryController.create(req, res);
+	});
 
-module.exports = router;
+	router.put('/:id', function(req, res){
+		categoryController.update(req, res);
+	});
+
+	router.delete('/:id', function (req, res){
+		categoryController.remove(req, res);
+	});
+
+
+	return router;
+};
