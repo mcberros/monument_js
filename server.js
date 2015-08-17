@@ -12,9 +12,13 @@ module.exports = function(){
   app.engine('handlebars', handlebars.engine);
   app.set('view engine', 'handlebars');
 
-  app.use(require('cookie-parser')(credentials.cookieSecret));
+  app.use(require('cookie-parser')(credentials.cookieSecret)); //It is necessary?
   app.use(require('body-parser').urlencoded({extended: false}));
-  app.use(require('express-session')());
+  app.use(require('express-session')({
+    secret: credentials.cookieSecret,
+    resave: true,
+    saveUninitialized: true
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
 
