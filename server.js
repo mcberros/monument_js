@@ -1,7 +1,9 @@
 var express = require('express');
 var methodOverride = require('method-override');
 var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
-var credentials = require('./controllers/credentials');
+if (process.env.NODE_ENV !== 'production') {
+  var credentials = require('./controllers/credentials');
+}
 var flash = require('connect-flash');
 var passport = require('passport');
 var initPassport = require('./passport/init');
