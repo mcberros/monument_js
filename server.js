@@ -22,10 +22,10 @@ module.exports = function(){
   app.engine('handlebars', handlebars.engine);
   app.set('view engine', 'handlebars');
 
-  app.use(require('cookie-parser')(credentials.cookieSecret)); //It is necessary?
+  app.use(require('cookie-parser')(process.env.COOKIE_SECRET || credentials.cookieSecret)); //It is necessary?
   app.use(require('body-parser').urlencoded({extended: false}));
   app.use(require('express-session')({
-    secret: credentials.cookieSecret,
+    secret: process.env.COOKIE_SECRET || credentials.cookieSecret,
     resave: true,
     saveUninitialized: true
   }));
