@@ -9,7 +9,7 @@ module.exports = function(isAuthenticated){
   });
 
   router.get('/home', isAuthenticated, function(req, res){
-    res.render('home', { user: req.user });
+    res.render('home', { isAuth: req.isAuthenticated(), user: req.user });
   });
 
 	return router;

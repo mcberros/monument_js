@@ -1,6 +1,8 @@
 var express = require('express');
 var methodOverride = require('method-override');
-var handlebars = require('express-handlebars').create({ defaultLayout:'main' });
+var handlebars = require('express-handlebars').create({ defaultLayout:'main',
+                                                        partialsDir: ['views/partials/']
+                                                      });
 if (process.env.NODE_ENV !== 'production') {
   var credentials = require('./controllers/credentials');
 }
