@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var categorySchema = mongoose.Schema({
-  name: String
+  name: String,
+  creator_id: String
 });
 
 var Category = mongoose.model('Category', categorySchema);
@@ -14,8 +15,8 @@ exports.getCategory = function(id, cb) {
 	Category.findOne({_id: id}, cb);
 };
 
-exports.createCategory = function(name, cb) {
-	var cat = new Category({ name: name });
+exports.createCategory = function(name, creator_id, cb) {
+	var cat = new Category({ name: name, creator_id: creator_id });
 	cat.save(cb);
 };
 

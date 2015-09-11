@@ -32,7 +32,7 @@ var controller = {
 
 		var name = req.body.name;
 
-		categoryModel.createCategory(name, function(err, category){
+		categoryModel.createCategory(name, current_user_id, function(err, category){
 			if(err) {
 				console.log(err);
 				res.status(500);
@@ -50,32 +50,61 @@ var controller = {
 				res.status(500);
 				return res.render('500');
 			}
-	  	res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
+			if(category.creator_id === current_user_id) {
+				res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
+			} else {
+				res.status(401);
+				return res.render('401');
+	  	}
 	  });
 	},
 	update: function(req, res) {
 		var id = req.params.id;
 		var name = req.body.name;
 
-		categoryModel.updateCategory(id, name, function(err){
+		categoryModel.getCategory(id, function(err, category){
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
 			}
-			res.redirect('/categories/' + id);
+			if(category.creator_id === current_user_id) {
+				categoryModel.updateCategory(id, name, function(err){
+					if(err) {
+						console.log(err);
+						res.status(500);
+						return res.render('500');
+					}
+					res.redirect('/categories/' + id);
+				});
+			} else {
+				res.status(401);
+				return res.render('401');
+			}
 		});
 	},
 	remove: function(req, res) {
 		var id = req.params.id;
 
-		categoryModel.deleteCategory(id, function(err){
+		categoryModel.getCategory(id, function(err, category){
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
 			}
-			res.redirect('/categories');
+			if(category.creator_id === current_user_id) {
+				categoryModel.deleteCategory(id, function(err){
+					if(err) {
+						console.log(err);
+						res.status(500);
+						return res.render('500');
+					}
+					res.redirect('/categories');
+				});
+			} else {
+				res.status(401);
+				return res.render('401');
+			}
 		});
 	}
 };
