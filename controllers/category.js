@@ -30,7 +30,8 @@ var controller = {
 		console.log('CSRF token (from hidden form field): ' + req.body._csrf);
 		console.log('Name (from visible form field): ' + req.body.name);
 
-		var name = req.body.name;
+		var name = req.body.name,
+				current_user_id = req.user._id.toString();
 
 		categoryModel.createCategory(name, current_user_id, function(err, category){
 			if(err) {
@@ -42,7 +43,8 @@ var controller = {
 		});
 	},
 	editForm: function(req, res) {
-		var id = req.params.id;
+		var id = req.params.id,
+				current_user_id = req.user._id.toString();
 
 		categoryModel.editCategory(id, function(err, category){
 			if(err) {
@@ -60,7 +62,8 @@ var controller = {
 	},
 	update: function(req, res) {
 		var id = req.params.id;
-		var name = req.body.name;
+		var name = req.body.name,
+				current_user_id = req.user._id.toString();
 
 		categoryModel.getCategory(id, function(err, category){
 			if(err) {
@@ -84,7 +87,8 @@ var controller = {
 		});
 	},
 	remove: function(req, res) {
-		var id = req.params.id;
+		var id = req.params.id,
+				current_user_id = req.user._id.toString();
 
 		categoryModel.getCategory(id, function(err, category){
 			if(err) {
