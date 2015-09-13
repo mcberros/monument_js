@@ -8,7 +8,7 @@ module.exports = function(isAuthenticated){
 	router.use(isAuthenticated);
 
 	router.get('/', function (req, res) {
-		categoryController.index(res);
+		categoryController.index(req, res);
 	});
 
 	router.get('/new', function (req, res) {

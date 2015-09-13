@@ -1,14 +1,27 @@
 var categoryModel = require('../models/category.js');
 
 var controller = {
-	index: function(res) {
+	index: function(req, res) {
+		var current_user_id = req.user._id.toString();
+
 		categoryModel.getCategories(function(err, categories) {
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
 			}
-	  	res.render('categories/index', {categories: categories});
+	  	res.render('categories/index', {categories: categories,
+	  																	current_user_id: current_user_id,
+	  																	helpers: { if_eq: function (a, b, opts) {
+	  																											if((typeof a !== "undefined") && (a === b)) {
+																											      return opts.fn(this);
+																											    } else {
+																											      return opts.inverse(this);
+																											    }
+	  																										}
+	  																					  }
+	  																  }
+	  						);
   	});
 	},
 	show: function(req, res) {

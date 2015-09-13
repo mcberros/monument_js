@@ -3,12 +3,13 @@
 	{{#each categories}}
 	<li>
 		<a class='link-show-category' href="/categories/{{id}}">{{name}}</a>
-		<a class='link-edit-category' href="/categories/{{id}}/edit">Edit {{name}}</a>
-		<form method="POST" action="/categories/{{id}}" enctype="application/x-www-form-urlencoded">
-		  <input type="hidden" name="_method" value="DELETE">
-		  <button class='delete-category-button' type="submit">Delete resource</button>
-		</form>
-
+		{{#if_eq creator_id ../current_user_id }}
+			<a class='link-edit-category' href="/categories/{{id}}/edit">Edit {{name}}</a>
+			<form method="POST" action="/categories/{{id}}" enctype="application/x-www-form-urlencoded">
+			  <input type="hidden" name="_method" value="DELETE">
+			  <button class='delete-category-button' type="submit">Delete resource</button>
+			</form>
+		{{/if_eq}}
 	</li>
 	{{/each}}
 </ul>
