@@ -8,7 +8,7 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 
 			categories.forEach(function(category){
@@ -25,7 +25,7 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 	  	res.render('categories/show', {category: category});
 	  });
@@ -44,7 +44,7 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 			res.redirect('/categories/' + category._id);
 		});
@@ -57,13 +57,13 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 			if(category.creator_id === current_user_id) {
 				res.render('categories/edit', { category: category, csrf: 'CSRF token goes here' });
 			} else {
 				res.status(401);
-				return res.render('401');
+				return res.render('errors/401');
 	  	}
 	  });
 	},
@@ -76,20 +76,20 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 			if(category.creator_id === current_user_id) {
 				categoryModel.updateCategory(id, name, function(err){
 					if(err) {
 						console.log(err);
 						res.status(500);
-						return res.render('500');
+						return res.render('errors/500');
 					}
 					res.redirect('/categories/' + id);
 				});
 			} else {
 				res.status(401);
-				return res.render('401');
+				return res.render('errors/401');
 			}
 		});
 	},
@@ -101,20 +101,20 @@ var controller = {
 			if(err) {
 				console.log(err);
 				res.status(500);
-				return res.render('500');
+				return res.render('errors/500');
 			}
 			if(category.creator_id === current_user_id) {
 				categoryModel.deleteCategory(id, function(err){
 					if(err) {
 						console.log(err);
 						res.status(500);
-						return res.render('500');
+						return res.render('errors/500');
 					}
 					res.redirect('/categories');
 				});
 			} else {
 				res.status(401);
-				return res.render('401');
+				return res.render('errors/401');
 			}
 		});
 	}

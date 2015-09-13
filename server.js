@@ -63,7 +63,7 @@ module.exports = function(){
 
   app.use(function(req, res, next){
     res.status(404);
-    res.render('404');
+    res.render('errors/404');
   });
 
   var server = app.listen(process.env.PORT || 3000, function () {
