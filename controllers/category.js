@@ -1,13 +1,20 @@
 var categoryModel = require('../models/category.js');
 
 var controller = {
-	index: function(res) {
+	index: function(req, res) {
+		var current_user_id = req.user._id.toString();
+
 		categoryModel.getCategories(function(err, categories) {
 			if(err) {
 				console.log(err);
 				res.status(500);
 				return res.render('500');
 			}
+
+			categories.forEach(function(category){
+				category.editable = (category.creator_id === current_user_id);
+			});
+
 	  	res.render('categories/index', {categories: categories});
   	});
 	},
