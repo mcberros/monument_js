@@ -5,8 +5,8 @@ var userSchema = mongoose.Schema({  id: String,
 																		password: String,
 																		email: String,
 																		firstName: String,
-																		lastName: String//,
-																		//collections: Schema.Types.Mixed
+																		lastName: String,
+																		collections: mongoose.Schema.Types.Mixed
 																 });
 
 var User = mongoose.model('User', userSchema);
@@ -19,6 +19,13 @@ var userModel = {
 	},
 	getUser: function(search_param, cb) {
 		User.findOne(search_param, cb);
+	},
+	getCollections: function(user_id, cb){
+		User.findById(user_id, 'collections', function(err, user) {
+			if(err)
+				return cb(err);
+			cb(null, user.collections);
+		});
 	}
 };
 

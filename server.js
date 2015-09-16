@@ -61,6 +61,8 @@ module.exports = function(){
 
   app.use('/categories', require('./routes/category')(isAuthenticated));
 
+  app.use('/', require('./routes/collection')(isAuthenticated));
+
   app.use(function(req, res, next){
     res.status(404);
     res.render('errors/404');
