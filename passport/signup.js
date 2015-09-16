@@ -10,7 +10,7 @@ module.exports = function(passport){
   function(req, username, password, done) {
     findOrCreateUser = function(){
       // find a user in Mongo with provided username
-      User.findOne({ 'username' :  username }, function(err, user) {
+      User.getUser({ 'username' :  username }, function(err, user) {
         // In case of any error, return using the done method
         if (err){
           console.log('Error in SignUp: '+err);
