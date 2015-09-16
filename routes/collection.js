@@ -11,21 +11,21 @@ module.exports = function(isAuthenticated){
 		collectionController.index(req, res);
 	});
 
-	// router.get('/new', function (req, res) {
-	//   collectionController.createForm(res);
-	// });
+	router.get('/users/:user_id/collections/new', function (req, res) {
+	  collectionController.createForm(res);
+	});
 
-	// router.get('/:id', function (req, res) {
-	// 	collectionController.show(req, res);
-	// });
+	router.get('/users/:user_id/collections/:id', function (req, res) {
+		collectionController.show(req, res);
+	});
 
 	// router.get('/:id/edit', function (req, res) {
 	// 	collectionController.editForm(req, res);
 	// });
 
-	// router.post('/', function(req, res){
-	// 	collectionController.create(req, res);
-	// });
+	router.post('/users/:user_id/collections/', function(req, res){
+		collectionController.create(req, res);
+	});
 
 	// router.put('/:id', function(req, res){
 	// 	collectionController.update(req, res);

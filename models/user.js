@@ -26,6 +26,23 @@ var userModel = {
 				return cb(err);
 			cb(null, user.collections);
 		});
+	},
+	getOneCollection: function(user_id, collection_id, cb){
+		User.findById(user_id, 'collections', function(err, user) {
+			if(err)
+				return cb(err);
+			var collection = user.collections[collection_id]
+			cb(null, collection);
+		});
+	},
+	createCollection: function(user_id, name, cb){
+		User.findById(user_id, 'collections', function(err, user) {
+			if(err)
+				return cb(err);
+			//Lo dejo aqui
+			var collection = user.collections.addCollection;
+			cb(null, collection);
+		});
 	}
 };
 

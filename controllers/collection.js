@@ -18,6 +18,50 @@ var controller = {
 			res.status(401);
 			return res.render('errors/401');
 		}
+	},
+	show: function(req, res) {
+		var current_user_id = req.user._id.toString(),
+				user_id = req.params.user_id,
+				collection_id = req.params.id;
+
+		if(user_id == current_user_id){
+			collectionModel.getOneCollection(user_id, collection_id, function(err, collection){
+				if(err) {
+					console.log(err);
+					res.status(500);
+					return res.render('errors/500');
+				}
+		  	res.render('collections/show', { user_id: user_id, collection: collection });
+		  });
+		} else {
+			res.status(401);
+			return res.render('errors/401');
+		}
+	},
+	createForm: function(res) {
+		res.render('collections/new', { csrf: 'CSRF token goes here' });
+	},
+	create: function(req, res) {
+		console.log('CSRF token (from hidden form field): ' + req.body._csrf);
+		console.log('Name (from visible form field): ' + req.body.name);
+
+		var name = req.body.name,
+				current_user_id = req.user._id.toString(),
+				user_id = req.params.user_id;
+
+		if(user_id == current_user_id){
+			userModel.createCollection(name, current_user_id, function(err, collection){
+				if(err) {
+					console.log(err);
+					res.status(500);
+					return res.render('errors/500');
+				}
+				res.redirect('/users/'+ current_user_id +'/collections/' + collection.id);
+			});
+		} else {
+			res.status(401);
+			return res.render('errors/401');
+		}
 	}
 };
 
