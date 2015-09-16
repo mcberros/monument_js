@@ -7,27 +7,26 @@ var categorySchema = mongoose.Schema({
 
 var Category = mongoose.model('Category', categorySchema);
 
-exports.getCategories = function(cb) {
-	Category.find({}, cb);
+var categoryModel = {
+	getCategories: function(cb) {
+		Category.find({}, cb);
+	},
+	getCategory: function(id, cb) {
+		Category.findOne({_id: id}, cb);
+	},
+	createCategory: function(name, creator_id, cb) {
+		var cat = new Category({ name: name, creator_id: creator_id });
+		cat.save(cb);
+	},
+	editCategory: function(id, cb) {
+		Category.findOne({_id: id}, cb);
+	},
+	updateCategory: function(id, name, cb) {
+		Category.update({_id: id}, {name: name}, cb);
+	},
+	deleteCategory: function(id, cb) {
+		Category.findOneAndRemove({ _id: id }, cb);
+	}
 };
 
-exports.getCategory = function(id, cb) {
-	Category.findOne({_id: id}, cb);
-};
-
-exports.createCategory = function(name, creator_id, cb) {
-	var cat = new Category({ name: name, creator_id: creator_id });
-	cat.save(cb);
-};
-
-exports.editCategory = function(id, cb) {
-	Category.findOne({_id: id}, cb);
-};
-
-exports.updateCategory = function(id, name, cb) {
-	Category.update({_id: id}, {name: name}, cb);
-};
-
-exports.deleteCategory = function(id, cb) {
-	Category.findOneAndRemove({ _id: id }, cb);
-};
+module.exports = categoryModel;
