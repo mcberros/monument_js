@@ -39,9 +39,30 @@ var userModel = {
 		User.findById(user_id, 'collections', function(err, user) {
 			if(err)
 				return cb(err);
-			//Lo dejo aqui
-			var collection = user.collections.addCollection;
-			cb(null, collection);
+			var newCollection = {},
+					newCollectionId,
+					collections = user.collections,
+					collectionKeys;
+
+			if(collections === undefined || collectionKeys.length === 0) {
+				newCollection = { 1: {name: name, monuments:{}}};
+				collections = newCollection;
+			} else {
+				collectionKeys = Object.keys(collections);
+				collectionKeys.forEach(function(key){
+					var collection = collections[key];
+					if(collection['name'] == name) {
+						return cb('collection already exists');
+					} else {
+						newCollectionId = collectionKeys.sort()[collectionKeys.length-1] + 1;
+						collections[newCollectionId] = {name: name, monuments: {}};
+						newCollection = {newCollectionId: {name: name, monuments: {}}};
+					}
+				});
+			}
+			user.collections = collections;
+			user.save();
+			cb(null, newCollection);
 		});
 	}
 };

@@ -12,7 +12,7 @@ module.exports = function(isAuthenticated){
 	});
 
 	router.get('/users/:user_id/collections/new', function (req, res) {
-	  collectionController.createForm(res);
+	  collectionController.createForm(req, res);
 	});
 
 	router.get('/users/:user_id/collections/:id', function (req, res) {
@@ -23,7 +23,7 @@ module.exports = function(isAuthenticated){
 	// 	collectionController.editForm(req, res);
 	// });
 
-	router.post('/users/:user_id/collections/', function(req, res){
+	router.post('/users/:user_id/collections/', function (req, res){
 		collectionController.create(req, res);
 	});
 
