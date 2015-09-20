@@ -14,6 +14,10 @@ var User = mongoose.model('User', userSchema);
 //							id_col_2: { name: String, monuments: { id_monument_2: {name: String}}}}
 
 var userModel = {
+	createUser: function(username, password, email, firstName, lastName, cb){
+		var user = new User({ username: username, password: password, email: email, firstName: firstName, lastName: lastName});
+		user.save(cb);
+	},
 	getUserById: function(id, cb) {
 		User.findById(id, cb);
 	},
@@ -34,7 +38,7 @@ var userModel = {
 			if(err)
 				return cb(err);
 			collection = user.collections[collection_id];
-			collection.id = collection_id;
+			collection['id'] = collection_id;
 			cb(null, collection);
 		});
 	},
@@ -48,9 +52,18 @@ var userModel = {
 					collectionKeys,
 					collection;
 
+			collectionKeys = Object.keys(collections);
+
+			console.log(collectionKeys);
 			if(collections === undefined || collectionKeys.length === 0) {
 				newCollection = { 1: {name: name, monuments:{}}};
-				collections = newCollection;
+				collections = { 1: {name: name, monuments:{}}};
+				user.collections = collections;
+				user.save();
+
+				newCollection['id'] = '1';
+				cb(null, newCollection);
+
 			} else {
 				collectionKeys = Object.keys(collections);
 				collectionKeys.forEach(function(key){
@@ -61,12 +74,17 @@ var userModel = {
 						newCollectionId = collectionKeys.sort()[collectionKeys.length-1] + 1;
 						collections[newCollectionId] = {name: name, monuments: {}};
 						newCollection = {newCollectionId: {name: name, monuments: {}}};
+
+						User.update({_id: user_id}, {collections: collections}, function(err, user){
+							if(err)
+								return cb(err);
+
+							newCollection['id'] = newCollectionId;
+							cb(null, newCollection);
+						});
 					}
 				});
 			}
-			user.collections = collections;
-			user.save();
-			cb(null, newCollection);
 		});
 	},
 	editCollection: function(user_id, collection_id, name, cb){
@@ -84,7 +102,6 @@ var userModel = {
 			collections[collection_id] = collection;
 
 			User.update({_id: user_id}, {collections: collections}, function(err, user){
-				console.log('hola');
 				if(err)
 					return cb(err);
 
@@ -93,6 +110,26 @@ var userModel = {
 		})
 	},
 	removeCollection: function(user_id, collection_id, cb){
+		//Category.findOneAndRemove({ _id: id }, cb);
+		var collections;
+
+		User.findById(user_id, 'collections', function(err, user) {
+			if(err)
+				return cb(err);
+
+			collections = user.collections;
+			delete collections[collection_id];
+
+			console.log(collections);
+
+			User.update({_id: user_id}, {collections: collections}, function(err, user){
+				if(err)
+					return cb(err);
+
+				cb(null);
+			})
+
+		})
 	}
 };
 
