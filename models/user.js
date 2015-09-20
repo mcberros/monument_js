@@ -42,7 +42,8 @@ var userModel = {
 			var newCollection = {},
 					newCollectionId,
 					collections = user.collections,
-					collectionKeys;
+					collectionKeys,
+					collection;
 
 			if(collections === undefined || collectionKeys.length === 0) {
 				newCollection = { 1: {name: name, monuments:{}}};
@@ -50,7 +51,7 @@ var userModel = {
 			} else {
 				collectionKeys = Object.keys(collections);
 				collectionKeys.forEach(function(key){
-					var collection = collections[key];
+					collection = collections[key];
 					if(collection['name'] == name) {
 						return cb('collection already exists');
 					} else {

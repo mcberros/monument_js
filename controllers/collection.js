@@ -3,7 +3,8 @@ var userModel = require('../models/user');
 var controller = {
 	index: function(req, res) {
 		var current_user_id = req.user._id.toString(),
-				user_id = req.params.user_id;
+				user_id = req.params.user_id,
+				collectionsKeys;
 
 		if(user_id === current_user_id) {
 	 		userModel.getCollections(user_id, function(err, collections) {
@@ -12,6 +13,15 @@ var controller = {
 					res.status(500);
 					return res.render('errors/500');
 				}
+
+				collectionsKeys = Object.keys(collections);
+
+				collectionsKeys.forEach(function(key){
+					collection = collections[key];
+					collection.id = key;
+					collections[key] = collection;
+				});
+
 		  	res.render('collections/index', { user_id: user_id, collections: collections });
 	  	});
 		} else {
@@ -31,6 +41,7 @@ var controller = {
 					res.status(500);
 					return res.render('errors/500');
 				}
+
 		  	res.render('collections/show', { user_id: user_id, collection: collection });
 		  });
 		} else {
