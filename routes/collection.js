@@ -31,10 +31,9 @@ module.exports = function(isAuthenticated){
 		collectionController.update(req, res);
 	});
 
-	// router.delete('/:id', function (req, res){
-	// 	collectionController.remove(req, res);
-	// });
-
+	router.delete('/users/:user_id/collections/:id', function (req, res){
+		collectionController.remove(req, res);
+	});
 
 	return router;
 };

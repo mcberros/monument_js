@@ -121,6 +121,26 @@ var controller = {
 			res.status(401);
 			return res.render('errors/401');
 		}
+	},
+	remove: function(req, res){
+		var current_user_id = req.user._id.toString(),
+				user_id = req.params.user_id,
+				collection_id = req.params.id;
+
+		if(user_id === current_user_id){
+			userModel.removeCollection(current_user_id, collection_id, function(){
+				if(err) {
+					console.log(err);
+					res.status(500);
+					return res.render('errors/500');
+				}
+
+			res.redirect('/users/' + current_user_id + '/collections/');
+			})
+		} else {
+			res.status(401);
+			return res.render('errors/401');
+		}
 	}
 };
 

@@ -70,22 +70,29 @@ var userModel = {
 		});
 	},
 	editCollection: function(user_id, collection_id, name, cb){
+		var collection,
+				collections;
+
 		User.findById(user_id, 'collections', function(err, user){
 			if(err)
 				return cb(err);
 
-			var collection,
-					collections = user.collections;
+			collections = user.collections;
 
 			collection = collections[collection_id];
 			collection['name'] = name;
 			collections[collection_id] = collection;
 
-			user.collections = collections;
-			user.save();
+			User.update({_id: user_id}, {collections: collections}, function(err, user){
+				console.log('hola');
+				if(err)
+					return cb(err);
 
-			cb(null, collection);
+				cb(null, collection);
+			});
 		})
+	},
+	removeCollection: function(user_id, collection_id, cb){
 	}
 };
 
