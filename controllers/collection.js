@@ -49,6 +49,26 @@ var controller = {
 			return res.render('errors/401');
 		}
 	},
+	editForm: function(req, res) {
+		var current_user_id = req.user._id.toString(),
+				user_id = req.params.user_id,
+				collection_id = req.params.id;
+
+		if(user_id === current_user_id){
+			userModel.getOneCollection(user_id, collection_id, function(err, collection){
+				if(err){
+					console.log(err);
+					res.status(500);
+					return res.render('errors/500');
+				}
+
+				res.render('collections/edit', {user_id: user_id, collection: collection });
+			});
+		} else {
+			res.status(401);
+			return res.render('errors/401');
+		}
+	},
 	createForm: function(req, res) {
 		var current_user_id = req.user._id.toString(),
 				user_id = req.params.user_id;
@@ -75,6 +95,27 @@ var controller = {
 					return res.render('errors/500');
 				}
 				res.redirect('/users/'+ current_user_id +'/collections/' + collection.id);
+			});
+		} else {
+			res.status(401);
+			return res.render('errors/401');
+		}
+	},
+	update: function(req, res){
+		var name = req.body.name,
+				current_user_id = req.user._id.toString(),
+				user_id = req.params.user_id,
+				collection_id = req.params.id;
+
+		if(user_id === current_user_id){
+			userModel.editCollection(current_user_id, collection_id, name, function(err, collection){
+				if(err) {
+					console.log(err);
+					res.status(500);
+					return res.render('errors/500');
+				}
+
+				res.redirect('/users/'+ current_user_id +'/collections/' + collection_id);
 			});
 		} else {
 			res.status(401);

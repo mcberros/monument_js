@@ -19,17 +19,17 @@ module.exports = function(isAuthenticated){
 		collectionController.show(req, res);
 	});
 
-	// router.get('/:id/edit', function (req, res) {
-	// 	collectionController.editForm(req, res);
-	// });
+	router.get('/users/:user_id/collections/:id/edit', function (req, res) {
+		collectionController.editForm(req, res);
+	});
 
 	router.post('/users/:user_id/collections/', function (req, res){
 		collectionController.create(req, res);
 	});
 
-	// router.put('/:id', function(req, res){
-	// 	collectionController.update(req, res);
-	// });
+	router.put('/users/:user_id/collections/:id', function(req, res){
+		collectionController.update(req, res);
+	});
 
 	// router.delete('/:id', function (req, res){
 	// 	collectionController.remove(req, res);
