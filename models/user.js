@@ -50,12 +50,9 @@ var userModel = {
 					newCollectionId,
 					collections = user.collections,
 					collectionKeys,
-					collection;
+					existsName;
 
-			collectionKeys = Object.keys(collections);
-
-			console.log(collectionKeys);
-			if(collections === undefined || collectionKeys.length === 0) {
+			if(collections === undefined) {
 				newCollection = { 1: {name: name, monuments:{}}};
 				collections = { 1: {name: name, monuments:{}}};
 				user.collections = collections;
@@ -66,24 +63,37 @@ var userModel = {
 
 			} else {
 				collectionKeys = Object.keys(collections);
-				collectionKeys.forEach(function(key){
-					collection = collections[key];
-					if(collection['name'] == name) {
+
+				if(collectionKeys.length === 0){
+					newCollection = { 1: {name: name, monuments:{}}};
+					collections = { 1: {name: name, monuments:{}}};
+					user.collections = collections;
+					user.save();
+
+					newCollection['id'] = '1';
+					cb(null, newCollection);
+				} else {
+					existsName = collectionKeys.some(function(key){
+						var collection = collections[key];
+						return collection.name === name;
+					});
+
+					if(existsName)
 						return cb('collection already exists');
-					} else {
-						newCollectionId = collectionKeys.sort()[collectionKeys.length-1] + 1;
-						collections[newCollectionId] = {name: name, monuments: {}};
-						newCollection = {newCollectionId: {name: name, monuments: {}}};
 
-						User.update({_id: user_id}, {collections: collections}, function(err, user){
-							if(err)
-								return cb(err);
+					newCollectionId = Number(collectionKeys.sort()[collectionKeys.length-1]) + 1;
+					collections[newCollectionId] = {name: name, monuments: {}};
+					newCollection = {newCollectionId: {name: name, monuments: {}}};
 
-							newCollection['id'] = newCollectionId;
-							cb(null, newCollection);
-						});
-					}
-				});
+					User.update({_id: user_id}, {collections: collections}, function(err, user){
+						if(err)
+							return cb(err);
+
+						newCollection['id'] = newCollectionId;
+
+						cb(null, newCollection);
+					});
+				}
 			}
 		});
 	},
@@ -119,8 +129,6 @@ var userModel = {
 
 			collections = user.collections;
 			delete collections[collection_id];
-
-			console.log(collections);
 
 			User.update({_id: user_id}, {collections: collections}, function(err, user){
 				if(err)

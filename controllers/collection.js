@@ -7,23 +7,24 @@ var controller = {
 				collectionsKeys;
 
 		if(user_id === current_user_id) {
-	 		userModel.getCollections(user_id, function(err, collections) {
+	 	 	userModel.getCollections(user_id, function(err, collections) {
 				if(err) {
 					console.log(err);
 					res.status(500);
 					return res.render('errors/500');
 				}
-
-				collectionsKeys = Object.keys(collections);
-
-				collectionsKeys.forEach(function(key){
-					collection = collections[key];
-					collection.id = key;
-					collections[key] = collection;
-				});
-
-		  	res.render('collections/index', { user_id: user_id, collections: collections });
-	  	});
+				if(collections === undefined) {
+					collections = {};
+				} else {
+					collectionsKeys = Object.keys(collections);
+					collectionsKeys.forEach(function(key){
+						collection = collections[key];
+						collection.id = key;
+						collections[key] = collection;
+					});
+		  	}
+	 			res.render('collections/index', { user_id: user_id, collections: collections });
+			});
 		} else {
 			res.status(401);
 			return res.render('errors/401');
@@ -33,7 +34,6 @@ var controller = {
 		var current_user_id = req.user._id.toString(),
 				user_id = req.params.user_id,
 				collection_id = req.params.id;
-
 		if(user_id === current_user_id){
 			userModel.getOneCollection(user_id, collection_id, function(err, collection){
 				if(err) {
@@ -128,7 +128,7 @@ var controller = {
 				collection_id = req.params.id;
 
 		if(user_id === current_user_id){
-			userModel.removeCollection(current_user_id, collection_id, function(){
+			userModel.removeCollection(current_user_id, collection_id, function(err){
 				if(err) {
 					console.log(err);
 					res.status(500);
