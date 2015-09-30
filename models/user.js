@@ -53,26 +53,19 @@ var userModel = {
 
 			if(collections === undefined) {
 				collections = newCollectionSet();
-				newCollection = collections.append(collections, {name: name, monuments:{}});
-				user.collections = collections;
-				user.save();
-
-				cb(null, newCollection);
-
 			} else {
-
 				Object.keys(collectionSetEmpty).every(function(key){
 					collections[key] = collectionSetEmpty[key];
 				});
-
-				newCollection = collections.append(collections, {name: name, monuments:{}});
-
-				User.update({_id: user_id}, {collections: collections}, function(err, user){
-					if(err)
-						return cb(err);
-					cb(null, newCollection);
-				});
 			}
+
+			newCollection = collections.append(collections, {name: name, monuments:{}});
+
+			User.update({_id: user_id}, {collections: collections}, function(err, user){
+				if(err)
+					return cb(err);
+				cb(null, newCollection);
+			});
 		});
 	},
 	editCollection: function(user_id, collection_id, name, cb){
@@ -120,3 +113,4 @@ var userModel = {
 };
 
 module.exports = userModel;
+
