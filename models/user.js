@@ -39,7 +39,6 @@ var userModel = {
 			if(err)
 				return cb(err);
 			collection = user.collections[collection_id];
-			collection['id'] = collection_id;
 			cb(null, collection);
 		});
 	},
@@ -47,7 +46,7 @@ var userModel = {
 		User.findById(user_id, 'collections', function(err, user) {
 			if(err)
 				return cb(err);
-			var newCollection = {},
+			var newCollection,
 					collections = user.collections,
 					collectionSetEmpty = newCollectionSet();
 
