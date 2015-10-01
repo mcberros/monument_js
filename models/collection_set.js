@@ -1,33 +1,42 @@
 //collections: {id_col_1: { name: String, monuments: { id_monument_1: {name: String}}},
 //							id_col_2: { name: String, monuments: { id_monument_2: {name: String}}}}
 
-module.exports = function(){
-	var collectionSet = {
-		append: function(oldCollections, newCollection){
-			var newCollectionId,
-					existsName;
+module.exports = function(collectionsData){
+	var lastId, collectionsKeys;
 
-			collectionSet = oldCollections;
-			var collectionSetKeys = Object.keys(collectionSet).filter(function(key){
-				return typeof collectionSet[key] == 'object';
+	function initialize() {
+		collectionsData = collectionsData || {};
+
+		collectionsKeys = Object.keys(collectionsData);
+		if(collectionsKeys.length === 0){
+			lastId = 0;
+		} else {
+			lastId = Number(collectionsKeys.sort()[collectionsKeys.length-1]);
+		}
+	}
+
+	initialize();
+
+	var collectionSet = {
+		data: function(){
+			return collectionsData;
+		},
+		append: function(newCollection){
+			var existsName = collectionsKeys.some(function(key){
+				var collection = collectionsData[key];
+				return collection.name === newCollection.name;
 			});
 
-			if(collectionSetKeys.length === 0){
-				newCollectionId = 0;
-			} else {
-				existsName = collectionSetKeys.some(function(key){
-					var collection = collectionSet[key];
-					return collection.name === newCollection.name;
-				});
+			if(existsName)
+				throw 'collection already exists';
 
-				if(existsName)
-					throw 'collection already exists';
+			lastId = lastId + 1;
 
-				newCollectionId = Number(collectionSetKeys.sort()[collectionSetKeys.length-1]) + 1;
-			}
+			newCollection['id'] = lastId.toString();
 
-			newCollection['id'] = newCollectionId.toString();
-			collectionSet[newCollectionId] = newCollection;
+			collectionsData[lastId] = newCollection;
+			collectionsKeys.push(newCollection['id']);
+
 			return newCollection;
 		}
 	};

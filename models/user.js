@@ -47,20 +47,13 @@ var userModel = {
 			if(err)
 				return cb(err);
 			var newCollection,
-					collections = user.collections,
-					collectionSetEmpty = newCollectionSet();
+					collectionsData = user.collections;
 
-			if(collections === undefined) {
-				collections = newCollectionSet();
-			} else {
-				Object.keys(collectionSetEmpty).every(function(key){
-					collections[key] = collectionSetEmpty[key];
-				});
-			}
+			collectionSet = newCollectionSet(collectionsData);
 
-			newCollection = collections.append(collections, {name: name, monuments:{}});
+			newCollection = collectionSet.append({name: name, monuments:{}});
 
-			User.update({_id: user_id}, {collections: collections}, function(err, user){
+			User.update({_id: user_id}, {collections: collectionSet.data()}, function(err, user){
 				if(err)
 					return cb(err);
 				cb(null, newCollection);
