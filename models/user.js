@@ -46,12 +46,9 @@ var userModel = {
 		User.findById(user_id, 'collections', function(err, user) {
 			if(err)
 				return cb(err);
-			var newCollection,
-					collectionsData = user.collections;
 
-			collectionSet = newCollectionSet(collectionsData);
-
-			newCollection = collectionSet.append({name: name, monuments:{}});
+			var collectionSet = newCollectionSet(user.collections),
+					newCollection = collectionSet.append(name);;
 
 			User.update({_id: user_id}, {collections: collectionSet.data()}, function(err, user){
 				if(err)

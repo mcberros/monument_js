@@ -21,7 +21,9 @@ module.exports = function(collectionsData){
 		data: function(){
 			return collectionsData;
 		},
-		append: function(newCollection){
+		append: function(name){
+			var newCollection = {name: name, monuments:{}};
+
 			var existsName = collectionsKeys.some(function(key){
 				var collection = collectionsData[key];
 				return collection.name === newCollection.name;
