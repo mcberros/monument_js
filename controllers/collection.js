@@ -1,4 +1,4 @@
-var userModel = require('../dao/user');
+var userDao = require('../dao/user');
 
 var controller = {
 	index: function(req, res) {
@@ -7,7 +7,7 @@ var controller = {
 				collectionsKeys;
 
 		if(user_id === current_user_id) {
-	 	 	userModel.getCollections(user_id, function(err, collections) {
+	 	 	userDao.getCollections(user_id, function(err, collections) {
 				if(err) {
 					console.log(err);
 					res.status(500);
@@ -35,7 +35,7 @@ var controller = {
 				user_id = req.params.user_id,
 				collection_id = req.params.id;
 		if(user_id === current_user_id){
-			userModel.getOneCollection(user_id, collection_id, function(err, collection){
+			userDao.getOneCollection(user_id, collection_id, function(err, collection){
 				if(err) {
 					console.log(err);
 					res.status(500);
@@ -55,7 +55,7 @@ var controller = {
 				collection_id = req.params.id;
 
 		if(user_id === current_user_id){
-			userModel.getOneCollection(user_id, collection_id, function(err, collection){
+			userDao.getOneCollection(user_id, collection_id, function(err, collection){
 				if(err){
 					console.log(err);
 					res.status(500);
@@ -88,7 +88,7 @@ var controller = {
 				user_id = req.params.user_id;
 
 		if(user_id === current_user_id){
-			userModel.createCollection(current_user_id, name, function(err, collection){
+			userDao.createCollection(current_user_id, name, function(err, collection){
 				if(err) {
 					console.log(err);
 					res.status(500);
@@ -108,14 +108,22 @@ var controller = {
 				collection_id = req.params.id;
 
 		if(user_id === current_user_id){
-			userModel.editCollection(current_user_id, collection_id, name, function(err, collection){
+			userDao.getUserById(current_user_id, function(err, user) {
 				if(err) {
-					console.log(err);
-					res.status(500);
-					return res.render('errors/500');
-				}
+			 		console.log(err);
+			 		res.status(500);
+			 		return res.render('errors/500');
+			 	}
 
-				res.redirect('/users/'+ current_user_id +'/collections/' + collection_id);
+				user.editCollection(collection_id, name, function(err, collection){
+					if(err) {
+						console.log(err);
+						res.status(500);
+						return res.render('errors/500');
+					}
+
+					res.redirect('/users/'+ current_user_id +'/collections/' + collection_id);
+				});
 			});
 		} else {
 			res.status(401);
@@ -128,7 +136,7 @@ var controller = {
 				collection_id = req.params.id;
 
 		if(user_id === current_user_id){
-			userModel.removeCollection(current_user_id, collection_id, function(err){
+			userDao.removeCollection(current_user_id, collection_id, function(err){
 				if(err) {
 					console.log(err);
 					res.status(500);

@@ -44,6 +44,9 @@ module.exports = function(collectionsData){
 		},
 		update: function(name, collection_id){
 
+			console.log('collection_id', collection_id);
+			console.log('collectionsData', collectionsData);
+			
 			var collection = collectionsData[collection_id];
 
 			if(!collection)
