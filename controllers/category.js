@@ -1,4 +1,4 @@
-var categoryModel = require('../models/category.js');
+var categoryModel = require('../dao/category.js');
 
 var controller = {
 	index: function(req, res) {

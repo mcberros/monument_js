@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var newCollectionSet = require('./collection_set');
+var newCollectionSet = require('../models/collection_set');
 
 var userSchema = mongoose.Schema({  id: String,
 																		username: String,

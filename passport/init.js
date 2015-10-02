@@ -1,6 +1,6 @@
 var login = require('./login');
 var signup = require('./signup');
-var User = require('../models/user');
+var User = require('../dao/user');
 
 module.exports = function(passport){
 	// Passport needs to be able to serialize and deserialize users to support persistent login sessions

@@ -1,4 +1,4 @@
-var userModel = require('../models/user');
+var userModel = require('../dao/user');
 
 var controller = {
 	index: function(req, res) {
