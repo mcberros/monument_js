@@ -48,7 +48,7 @@ var userModel = {
 				return cb(err);
 
 			var collectionSet = newCollectionSet(user.collections),
-					newCollection = collectionSet.append(name);;
+					newCollection = collectionSet.append(name);
 
 			User.update({_id: user_id}, {collections: collectionSet.data()}, function(err, user){
 				if(err)
@@ -58,20 +58,14 @@ var userModel = {
 		});
 	},
 	editCollection: function(user_id, collection_id, name, cb){
-		var collection,
-				collections;
-
 		User.findById(user_id, 'collections', function(err, user){
 			if(err)
 				return cb(err);
 
-			collections = user.collections;
+			var collectionSet = newCollectionSet(user.collections),
+					collection = collectionSet.update(name, collection_id);
 
-			collection = collections[collection_id];
-			collection['name'] = name;
-			collections[collection_id] = collection;
-
-			User.update({_id: user_id}, {collections: collections}, function(err, user){
+			User.update({_id: user_id}, {collections: collectionSet.data()}, function(err, user){
 				if(err)
 					return cb(err);
 

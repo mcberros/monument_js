@@ -40,6 +40,18 @@ module.exports = function(collectionsData){
 			collectionsKeys.push(newCollection['id']);
 
 			return newCollection;
+		},
+		update: function(name, collection_id){
+
+			var collection = collectionsData[collection_id];
+
+			if(!collection)
+				throw 'collection does not exists';
+
+			collection['name'] = name;
+			collectionsData[collection_id] = collection;
+
+			return collection;
 		}
 	};
 
