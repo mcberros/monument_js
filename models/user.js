@@ -74,15 +74,14 @@ var userModel = {
 		})
 	},
 	removeCollection: function(user_id, collection_id, cb){
-		//Category.findOneAndRemove({ _id: id }, cb);
-		var collections;
 
 		User.findById(user_id, 'collections', function(err, user) {
 			if(err)
 				return cb(err);
 
-			collections = user.collections;
-			delete collections[collection_id];
+			var collectionSet = newCollectionSet(user.collections),
+					collections = collectionSet.delete(collection_id);
+
 
 			User.update({_id: user_id}, {collections: collections}, function(err, user){
 				if(err)

@@ -52,6 +52,18 @@ module.exports = function(collectionsData){
 			collectionsData[collection_id] = collection;
 
 			return collection;
+		},
+		delete: function(collection_id){
+			var collection = collectionsData[collection_id];
+
+			if(!collection)
+				throw 'collection does not exists';
+
+			delete collectionsData[collection_id];
+			collectionsKeys = Object.keys(collectionsData);
+			lastId = Number(collectionsKeys.sort()[collectionsKeys.length-1]);
+
+			return collectionsData;
 		}
 	};
 
